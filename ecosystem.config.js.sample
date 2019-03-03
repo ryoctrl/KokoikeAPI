@@ -1,0 +1,21 @@
+module.exports = {
+    app: [
+        {
+            name: 'kokoike-new',
+            script: 'npm',
+            args: 'start',
+            env: {
+                PORT: '',
+                TWITTER_CONSUMER_KEY: '',
+                TWITTER_CONSUMER_SECRET: '',
+                HOST_NAME: 'xxx.com',
+                USE_SSL: true,
+                DB_USER: '',
+                DB_PASS: '',
+                DB_HOST: '',
+                DB_DATABASE: '',
+            }
+        }
+    ]
+};
+
