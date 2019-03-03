@@ -4,6 +4,7 @@ module.exports = {
             name: 'kokoike-new',
             script: 'npm',
             args: 'start',
+            watch: true,
             env: {
                 PORT: '',
                 TWITTER_CONSUMER_KEY: '',
