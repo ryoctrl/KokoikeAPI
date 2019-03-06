@@ -7,14 +7,29 @@ module.exports = {
             watch: true,
             env: {
                 PORT: '',
-                TWITTER_CONSUMER_KEY: '',
-                TWITTER_CONSUMER_SECRET: '',
-                HOST_NAME: 'xxx.com',
+                HOST_NAME: '',
                 USE_SSL: true,
                 DB_USER: '',
                 DB_PASS: '',
                 DB_HOST: '',
                 DB_DATABASE: '',
+                PASSWORD_ENC: '',
+                GNAVI_API_KEY: '',
+
+                AUTH: {
+                    local: {
+                        active: false
+                    },
+                    twitter: {
+                        active: true,
+                        CONSUMER_KEY: '',
+                        CONSUMER_SECRET: '',
+                    },
+                    facebook: {
+                        active: false,
+                    }
+
+                }
             }
         }
     ]
