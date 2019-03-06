@@ -2,15 +2,55 @@ const express = require('express');
 const router = express.Router();
 const locationController = require('../controllers/locationController');
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
+    const uid = req.query.uid;
+    if(!uid) {
+        res.status(404);
+        res.json({
+            err: true,
+            message: 'uid is not defined'
+        });
+        return;
+    }
 
+    const locations = await locationController.findAllByUserId(uid).catch((err) => {
+        console.error(err);
+        return null;
+    });
+
+    if(locations) {
+        res.json(locations);
+    } else {
+        res.status(500);
+        res.json({
+            err: true,
+            message: 'unknown error occured when fetching location records'
+        });
+    }
 });
 
-router.delete('/', (req, res, next) => {
-    console.log(req.body);
-    console.log(req.query);
-    console.log(req.params);
+router.delete('/', async (req, res, next) => {
+    const locationID = req.body.id;
 
+    const deletedLocation =  await locationController.deleteLocation(locationID).catch((err) => {
+        console.error(err);
+        return null;
+    });
+
+    const result = {};
+
+    if(deletedLocation) {
+        res.status(200);
+        result.status = 200;
+        result.message = 'succeeded';
+    } else {
+        res.status(500);
+        result.status = 500;
+        result.message = 'failed';
+    }
+
+    res.json(result);
+    return;
 });
 
 router.post('/', async (req, res, next) => {

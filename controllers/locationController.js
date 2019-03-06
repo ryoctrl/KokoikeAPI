@@ -60,11 +60,13 @@ module.exports = {
         console.log(newLocationObj);
         return newLocationObj;
     },
-    deleteLocation: function(locationID) {
+    deleteLocation: async function(locationID) {
         const q = {
-            id: locationID
+            where: {
+                id: locationID
+            }
         };
 
-         models.locations.destroy(q);
+         return await models.locations.destroy(q);
     }
 }
