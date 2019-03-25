@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const axios = require('axios');
-const GNAVI_API_KEY = process.env.GNAVI_API_KEY;
+const gnavi = require('../controllers/gnaviController');
 
 router.get('/', async function(req, res, next) {
     const word = req.query.word;
@@ -16,16 +15,7 @@ router.get('/', async function(req, res, next) {
         return;
     }
 
-    const response = await axios.get('https://api.gnavi.co.jp/RestSearchAPI/v3/', {
-        params: {
-            keyid: GNAVI_API_KEY,
-            name: word
-        }
-    });
-
-    console.log(response.data);
-
-    res.json(response.data);
+    res.json(await gnavi.shopSearch(word));
 });
 
 module.exports = router;
