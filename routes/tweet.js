@@ -13,8 +13,8 @@ router.get('/:id', async function(req, res, next) {
         return;
     }
 
-    const tweet = await tc.getTweet(id);
-    if(tweet.length != 1) {
+    const tweet = await tc.getLocationByTweet(id);
+    if(!tweet) {
         res.status(500);
         res.json({
             err: true,
