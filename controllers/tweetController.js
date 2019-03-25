@@ -6,6 +6,8 @@ const client = new Twitter({
     access_token_secret: process.env.ADMIN_ACCESS_TOKEN_SECRET
 });
 
+const strategy = require('../strategy');
+
 module.exports = {
     getTweet: async function(id) {
         if(!id) {
@@ -20,13 +22,16 @@ module.exports = {
             return err;
         });
     },
-    getLocationFromTweet: async function(id) {
-        const tweet = this.getTweeet(id);
+    getLocationByTweet: async function(id) {
+        let tweet = await this.getTweet(id);
         if(tweet == null || tweet.length != 1) {
             return;
         }
 
+        tweet = tweet[0];
+        console.log(tweet);
 
-
+        strategy.extractLocationFromTweet(tweet);
+        return tweet;
     },
 };
