@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const crypto = require('../lib/crypto');
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.status(404);
+    res.json({
+        message: 'No service'
+    });
 });
 
 module.exports = router;

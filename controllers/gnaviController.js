@@ -13,19 +13,34 @@ const invokeRequest = async function(endpoint, params) {
 }
 
 module.exports = {
-    shopSearch: async function(word) {
+    shopSearch: async function(word, largeArea) {
         const parameters = {
             params: {
                 keyid: GNAVI_API_KEY,
                 name: word,
             }
         };
+
+        if(largeArea) {
+            parameters.params.areacode_l = largeArea;
+        }
         const res = await invokeRequest(ENDPOINTS.SHOPS, parameters);
         return res.data;
     },
-    getLeargeAreas: async function(word) {
-        return await invokeRequest(ENDPOINTS.LARGEAREA, {});
+    getLeargeAreaKey: async function(area) {
+        const parameters = {
+            params: {
+                keyid: GNAVI_API_KEY,
+            }
+        };
+
+        let results = await invokeRequest(ENDPOINTS.LARGEAREA, parameters);
+        results = results.data.garea_large
+        for(result of results) {
+            if (result.areaname_l.indexOf(area) != -1) {
+                return result;
+            }
+        }
+        return null;
     }
-
-
 }

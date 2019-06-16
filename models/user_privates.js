@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const user_privates = sequelize.define('user_privates', {
     user_id: DataTypes.INTEGER,
     twitter_access_token: DataTypes.STRING,
-    twitter_access_secret: DataTypes.STRING
+    twitter_access_secret: DataTypes.STRING,
+    token: DataTypes.STRING,
   }, {
     underscored: true,
   });

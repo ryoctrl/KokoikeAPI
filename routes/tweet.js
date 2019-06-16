@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const tc = require('../controllers/tweetController');
+const uc = require('../controllers/userController');
+const ac = require('../controllers/authController');
 
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', ac.tokenAuth, async function(req, res, next) {
+    const user = req.authedUser;
     const id = req.params.id;
     if(!id) {
         res.status(500);
@@ -13,7 +16,10 @@ router.get('/:id', async function(req, res, next) {
         return;
     }
 
-    const tweet = await tc.getLocationByTweet(id);
+    const tweet = await tc.getLocationByTweet(id, {
+        twitter_access_token: user.twitter_access_token,
+        twitter_access_secret: user.twitter_access_secret
+    });
     if(!tweet) {
         res.status(500);
         res.json({

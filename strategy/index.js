@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const basename = path.basename(__filename);
 const strategies = {};
+const gc = require('../controllers/gnaviController');
 
 
 fs.readdirSync(__dirname)
@@ -48,7 +49,7 @@ module.exports = {
 
         return;
     },
-    extractLocationFromTweet: function(tweet) {
+    extractLocationFromTweet: async function(tweet) {
         const validate = this.validateTweetObject(tweet);
         if(validate) {
             return validate;
@@ -64,6 +65,10 @@ module.exports = {
             };
         }
 
-        return strategies[tweetedUser].extractLocationFromTweet(tweet);
+        const shopData = strategies[tweetedUser].extractLocationFromTweet(tweet);
+
+        const areaKey = await gc.getLeargeAreaKey(shopData.area);
+        const shops = await gc.shopSearch(shopData.name, areaKey.areacode_l);
+        return shops;
     }
 }

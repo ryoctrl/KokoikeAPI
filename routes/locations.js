@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const locationController = require('../controllers/locationController');
+const uc = require('../controllers/authController');
 
-router.get('/', async (req, res, next) => {
+router.get('/', uc.tokenAuth, async (req, res, next) => {
     const uid = req.query.uid;
     if(!uid) {
         res.status(404);

@@ -35,12 +35,43 @@ module.exports = {
 
         this.app.get('/auth/twitter', passport.authenticate('twitter'));
         this.app.get('/auth/twitter/callback', passport.authenticate('twitter'), async function(req, res) {
-            const userDatas = req.session.passport.user.dataValues;
-            console.log('responsing');
+            const user = req.session.passport.user;
+            const privateData = await user.getPrivate();
+            console.log('privateData is below!');
+            console.log(privateData);
+            const userDatas = user.dataValues;
+            console.log(privateData['token']);
+            userDatas['token'] = privateData['token'];
             console.log(userDatas);
+
             res.json(userDatas);
         });
         console.log('Twitter Auth is activated');
     },
+    tokenAuth: [
+        /*
+        async function(req, res, next) {
+            const token = req.headers.authorization;
+            console.log(token);
+            let user = await uc.findOneByToken(token, true);
+            if(!user) {
+                res.status(403);
+                res.json({
+                    err: true,
+                    message: 'User not authed'
+                });
+                return;
+            }
+            req.authedUser = user;
+            next();
+        },
+        function(req, res, next) {
+            const user = req.authedUser;
+            const message = `${user.screen_name} accessed to ${req.originalUrl}`;
+            console.log(message);
+            next();
+        }
+        */
+    ],
     checkPassword: bcrypt.compare,
 }

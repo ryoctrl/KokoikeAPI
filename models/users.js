@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
   users.associate = function(models) {
-      users.hasOne(models.user_privates);
+      users.hasOne(models.user_privates, { 
+          as: 'Private',
+          foreignKey: 'user_id',
+      });
   };
   return users;
 };

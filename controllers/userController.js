@@ -41,10 +41,13 @@ module.exports = {
         const newSecret = {
             user_id: user.id,
             twitter_access_token: crypto.encryption(token),
-            twitter_access_secret: crypto.encryption(tokenSecret)
+            twitter_access_secret: crypto.encryption(tokenSecret),
+            token: crypto.generateToken(),
         };
 
-        models.user_privates.create(newSecret);
+        console.log(newSecret);
+
+        await models.user_privates.create(newSecret);
 
 
         //メールアドレスが必要であればこれを使う 
@@ -76,6 +79,25 @@ module.exports = {
             }
         };
         return await models.users.findOne(query);
+    },
+    findOneByToken: async function(token, full) {
+        let query = {
+            where: {
+                token: token
+            }
+        };
+        let userPriv = await models.user_privates.findOne(query).catch((err) => { return null });
+        if(!userPriv) return null;
+        let user = await userPriv.getUser().catch((err) => { return null });
+        if(!user) return null;
+        user = user.dataValues;
+        userPriv = userPriv.dataValues;
+        if(full) {
+            userPriv.twitter_access_token = crypto.decryption(userPriv.twitter_access_token);
+            userPriv.twitter_access_secret = crypto.decryption(userPriv.twitter_access_secret);
+            return Object.assign(user, userPriv);
+        }
+        return user;
     },
     findOneByEmail: async function(email) {
         let query = {

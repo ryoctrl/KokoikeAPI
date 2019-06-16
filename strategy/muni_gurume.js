@@ -13,8 +13,10 @@ module.exports = {
             if(begin) areaName += ch;
             if(ch.charCodeAt(0) === 65306) begin = true;
         }
-        console.log(name, areaName);
-        return {};
+        return {
+            name: name,
+            area: areaName,
+        };
 
     }
 }
